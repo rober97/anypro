@@ -18,7 +18,7 @@ import EssentialLink from "components/EssentialLink.vue";
 
 const linksList = [
   {
-    title: "Usuarioss",
+    title: "Usuarios",
     caption: "",
     icon: "school",
     link: "/list-user",
