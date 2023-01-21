@@ -21,73 +21,84 @@
 
     <q-page-container>
       <div class="q-pa-md">
-        <q-btn label="Medium" color="primary" @click="medium = true" />
-
-        <q-dialog v-model="small">
-          <q-card style="width: 300px">
-            <q-card-section>
-              <div class="text-h6">Small</div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              Click/Tap on the backdrop.
-            </q-card-section>
-
-            <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn flat label="OK" v-close-popup />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
+        <q-btn
+          round
+          color="primary"
+          icon="person_add"
+          @click="medium = true"
+          class="q-mb-md"
+        />
 
         <q-dialog v-model="medium">
           <q-card style="width: 700px; max-width: 80vw">
             <q-card-section>
-              <div class="text-h6">Medium</div>
+              <div class="text-h6">Registrar nuevo usuario</div>
             </q-card-section>
 
             <q-card-section class="q-pt-none">
-              Click/Tap on the backdrop.
+              <div class="q-gutter-y-md column">
+                <div class="row">
+                  <div class="col-6">
+                    <q-input
+                      standout="bg-light-blue-4 text-white"
+                      v-model="text"
+                      label="Nombre"
+                      :dense="dense"
+                    />
+                  </div>
+                  <div class="col-6 q-pl-sm">
+                    <q-input
+                      standout="bg-light-blue-4 text-white"
+                      v-model="text"
+                      label="Apellido"
+                      :dense="dense"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 col-md-12">
+                    <q-input
+                      standout="bg-light-blue-4 text-white"
+                      v-model="text"
+                      label="Rut"
+                      :dense="dense"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 col-md-12">
+                    <q-input
+                      standout="bg-light-blue-4 text-white"
+                      v-model="text"
+                      label="Contraseña"
+                      :dense="dense"
+                    />
+                  </div>
+                </div>
+
+                <div class="row">
+                  <div class="col-12 col-md-12">
+                    <q-input
+                      standout="bg-light-blue-4 text-white"
+                      v-model="text"
+                      label="Confirmar contraseña"
+                      :dense="dense"
+                    />
+                  </div>
+                </div>
+              </div>
             </q-card-section>
 
             <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn flat label="OK" v-close-popup />
+              <q-btn flat label="Registrar" @click="newUser()" v-close-popup />
             </q-card-actions>
           </q-card>
         </q-dialog>
 
-        <q-dialog v-model="fullWidth" full-width>
-          <q-card>
-            <q-card-section>
-              <div class="text-h6">Full Width</div>
-            </q-card-section>
-
-            <q-card-section class="q-pt-none">
-              Click/Tap on the backdrop.
-            </q-card-section>
-
-            <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn flat label="OK" v-close-popup />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
-
-        <q-dialog v-model="fullHeight" full-height>
-          <q-card class="column full-height" style="width: 300px">
-            <q-card-section>
-              <div class="text-h6">Full Height</div>
-            </q-card-section>
-
-            <q-card-section class="col q-pt-none">
-              Click/Tap on the backdrop.
-            </q-card-section>
-
-            <q-card-actions align="right" class="bg-white text-teal">
-              <q-btn flat label="OK" v-close-popup />
-            </q-card-actions>
-          </q-card>
-        </q-dialog>
         <q-table
-          title="Treats"
+          title="Usuarios registrados"
           :rows="records"
           :columns="columns"
           row-key="name"
@@ -202,6 +213,10 @@ export default defineComponent({
   methods: {
     closeSession() {
       this.$router.push({ path: "/login" });
+    },
+
+    newUser() {
+      alert("ASD");
     },
   },
 
