@@ -6,8 +6,10 @@
   "author": "rober97 <roberastorgab@gmail.com>",
   "private": true,
   "scripts": {
+    "start": "node server.js",
+    "serve": "vue-cli-service serve",
     "dev": "quasar dev",
-    "build": "quasar build",
+    "build": "quasar build vue-cli-service build",
     "lint": "eslint --ext .js,.vue ./",
     "format": "prettier --write \"**/*.{js,vue,scss,html,md,json}\" --ignore-path .gitignore",
     "test": "echo \"No test specified\" && exit 0"
