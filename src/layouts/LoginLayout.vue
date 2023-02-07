@@ -46,7 +46,18 @@
                   @click="login()"
                 />
               </q-card-actions>
-              <q-card-section class="text-center q-pa-none"> </q-card-section>
+              <q-card-section class="text-center q-pa-none">
+                <div class="q-pa-md q-gutter-sm" v-if="msgNotification">
+                  <q-banner
+                    inline-actions
+                    rounded
+                    class="text-white"
+                    :class="msgSuccess ? 'bg-success' : 'bg-orange'"
+                  >
+                    {{ msg }}
+                  </q-banner>
+                </div>
+              </q-card-section>
             </q-card>
           </div>
         </div>
@@ -56,16 +67,56 @@
 </template>
 
 <script>
-import { defineComponent } from "vue";
+import { defineComponent, ref, computed } from "vue";
+import axios from "axios";
 import { useRouter } from "vue-router";
-
+import { useGlobal } from "../stores/global";
+const global = useGlobal();
 export default {
   name: "LoginLayout",
+  setup() {
+    return {
+      email: ref(""),
+      password: ref(""),
+      msgNotification: ref(false),
+      msg: ref(""),
+      msgSuccess: ref(false),
+    };
+  },
   props: {},
 
   methods: {
-    login() {
-      this.$router.push({ path: "list-user" });
+    async login() {
+      //4234423
+      let config = {
+        headers: {
+          Accept: "application/json",
+          "Content-Type": "application/json",
+        },
+        method: "POST",
+        url: `${global.url_api}/login`,
+        //timeout: 5000,
+        data: {
+          email: this.email,
+          password: this.password,
+        },
+      };
+
+      await axios(config).then((res) => {
+        this.msgNotification = true;
+        this.msg = res.data.msg;
+        if (res.status == 200) {
+          this.msgSuccess = true;
+          localStorage.setItem("user", JSON.stringify(res.data));
+          if (res.data.tipo === "Usuario") {
+            this.$router.push({ path: "welcome" });
+          } else {
+            this.$router.push({ path: "list-user" });
+          }
+        } else {
+          this.msgSuccess = false;
+        }
+      });
     },
   },
 };

@@ -22,6 +22,12 @@ const routes = [
     component: () => import('layouts/ListUserLayout.vue'),
   },
 
+  {
+    path: '/welcome',
+    name: '/welcome',
+    component: () => import('layouts/Welcome.vue'),
+  },
+
 
   {
     path: '/login',

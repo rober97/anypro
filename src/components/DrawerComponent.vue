@@ -23,12 +23,6 @@ const linksList = [
     icon: "school",
     link: "/list-user",
   },
-  {
-    title: "Subir archivos",
-    caption: "",
-    icon: "code",
-    link: "/home",
-  },
 ];
 
 export default defineComponent({
