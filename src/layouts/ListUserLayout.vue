@@ -17,10 +17,11 @@
       </q-toolbar>
     </q-header>
 
-    <DrawerComponent />
+    <DrawerComponent :drawerStatus="false" />
 
     <q-page-container>
       <div class="q-pa-md">
+        <h4>Bienvenido {{ getLocalStorage.nombre }}!</h4>
         <q-btn
           round
           color="primary"
@@ -70,6 +71,7 @@
                       <q-input
                         standout="bg-light-blue-4 text-white"
                         v-model="userObject.rut"
+                        @keyup="verifyRut($event)"
                         required
                         label="Rut"
                       />
@@ -440,16 +442,22 @@ export default defineComponent({
     DrawerComponent,
   },
 
+  computed: {
+    getLocalStorage() {
+      return JSON.parse(localStorage.getItem("user"));
+    },
+  },
+
   methods: {
     closeSession() {
       this.$router.push({ path: "/login" });
+      localStorage.removeItem("user");
     },
 
     async newUser() {
-      let password = userObject.value.rut.substring(
-        4,
-        userObject.value.rut.length
-      );
+      let password = userObject.value.rut
+        .substring(4, userObject.value.rut.length)
+        .replace("-", "");
 
       userObject.value.password = password;
       let config = {
@@ -539,6 +547,29 @@ export default defineComponent({
           userList.value.push(res);
         });
       });
+    },
+
+    verifyRut(e) {
+      // Despejar Puntos
+      var valor = this.userObject.rut.replace(".", "");
+      // Despejar Guión
+      valor = valor.replace("-", "");
+
+      // Aislar Cuerpo y Dígito Verificador
+      let cuerpo = valor.slice(0, -1);
+      let dv = valor.slice(-1).toUpperCase();
+
+      // Formatear RUN
+      this.userObject.rut = cuerpo + "-" + dv;
+
+      let size = valor.length;
+      console.log("SIZE: ", size);
+      if (size == 9) {
+        e.preventDefault();
+      }
+      // Si todo sale bien, eliminar errores (decretar que es válido)
+      //alert("RUT VALIDO");
+      //rut.setCustomValidity("");
     },
 
     async infoUser(item) {

@@ -105,10 +105,10 @@ export default {
       await axios(config).then((res) => {
         this.msgNotification = true;
         this.msg = res.data.msg;
-        if (res.status == 200) {
+        if (res.data.success) {
           this.msgSuccess = true;
-          localStorage.setItem("user", JSON.stringify(res.data));
-          if (res.data.tipo === "Usuario") {
+          localStorage.setItem("user", JSON.stringify(res.data.user));
+          if (res.data.user.tipo === "Usuario") {
             this.$router.push({ path: "welcome" });
           } else {
             this.$router.push({ path: "list-user" });

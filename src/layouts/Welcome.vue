@@ -8,7 +8,7 @@
           round
           icon="menu"
           aria-label="Menu"
-          @click="toggleLeftDrawer"
+          @click="leftDrawerOpen = !leftDrawerOpen"
         />
 
         <q-toolbar-title> </q-toolbar-title>
@@ -17,10 +17,11 @@
       </q-toolbar>
     </q-header>
 
-    <DrawerComponent />
+    <DrawerComponent :drawerStatus="leftDrawerOpen" />
 
     <q-page-container>
       <div class="q-pa-md">
+        <h4>Bienvenido {{ getLocalStorage.nombre }}!</h4>
         <q-table
           ref="tableRef"
           title="Archivos disponibles"
@@ -72,23 +73,12 @@
               <q-td key="type" :props="props">
                 <q-btn
                   size="sm"
-                  color="red"
-                  round
-                  dense
-                  @click="deleteUser(props)"
-                  :icon="'delete'"
-                  title="Eliminar usuario"
-                />
-
-                <q-btn
-                  size="sm"
                   color="blue"
-                  class="q-ml-xs"
                   round
                   dense
-                  @click="infoUser(props)"
-                  :icon="'info'"
-                  title="Mas informacion"
+                  @click="downloadFile(props)"
+                  :icon="'download'"
+                  title="Descargar archivo"
                 />
               </q-td>
             </q-tr>
@@ -142,6 +132,12 @@ export default defineComponent({
     DrawerComponent,
   },
 
+  computed: {
+    getLocalStorage() {
+      return JSON.parse(localStorage.getItem("user"));
+    },
+  },
+
   methods: {
     closeSession() {
       this.$router.push({ path: "/login" });
@@ -161,7 +157,6 @@ export default defineComponent({
         };
 
         await axios(config).then((respuestas) => {
-          debugger;
           respuestas.data.forEach((element) => {
             let res = {
               _id: element._id,
@@ -175,25 +170,6 @@ export default defineComponent({
       }
     },
 
-    async deleteUser(item) {
-      let config = {
-        headers: {
-          Accept: "application/json",
-          "Content-Type": "application/json",
-        },
-        method: "POST",
-        url: `${global.url_api}/delete-user`,
-        //timeout: 5000,
-        data: {
-          id: item.row._id,
-        },
-      };
-
-      await axios(config).then((res) => {
-        rows.value = rows.value.filter((v) => v._id !== res.data._id);
-      });
-    },
-
     selectAllRows() {
       rows.value.forEach((v) => (v.selected = !v.selected));
     },
@@ -201,7 +177,7 @@ export default defineComponent({
     async downloadFile(item) {
       try {
         const response = await axios.get(
-          `${global.url_api}/downloadFile?id=${item._id}`,
+          `${global.url_api}/downloadFile?id=${item.row._id}`,
           {
             responseType: "blob",
           }
@@ -209,7 +185,7 @@ export default defineComponent({
         const blob = new Blob([response.data], { type: "application/pdf" });
         const link = document.createElement("a");
         link.href = URL.createObjectURL(blob);
-        link.download = item.name;
+        link.download = item.row.name;
         link.click();
       } catch (err) {
         console.log(err);
@@ -231,6 +207,7 @@ export default defineComponent({
     });
 
     return {
+      leftDrawerOpen: ref(false),
       hasData,
       listFilesData: ref([]),
       hideBottom: ref(false),
