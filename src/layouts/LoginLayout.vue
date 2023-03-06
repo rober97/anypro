@@ -99,7 +99,6 @@ export default {
       await axios(config).then((res) => {
         this.msgNotification = true;
         this.msg = res.data.msg;
-        debugger;
         if (res.data.success) {
           this.msgSuccess = true;
           localStorage.setItem("user", JSON.stringify(res.data.user));

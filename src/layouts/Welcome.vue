@@ -193,7 +193,7 @@ export default defineComponent({
     },
   },
 
-  async mounted() {
+  async created() {
     this.getFiles();
   },
 
