@@ -633,7 +633,6 @@ export default defineComponent({
       }
 
       let res = await axios.post(`${global.url_api}/upload-file`, formData);
-      debugger;
 
       if (res.status == 200) {
         this.files = [];
@@ -678,7 +677,6 @@ export default defineComponent({
       };
 
       await axios(config).then((res) => {
-        debugger;
         if (res.data.success) {
           this.listFilesData = this.listFilesData.filter(
             (v) => v._id !== item._id
