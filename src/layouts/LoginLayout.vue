@@ -2,13 +2,7 @@
   <q-layout>
     <q-page-container>
       <q-page
-        class="
-          bg-light-blue-2
-          window-height window-width
-          row
-          justify-center
-          items-center
-        "
+        class="bg-light-blue-2 window-height window-width row justify-center items-center"
       >
         <div class="column">
           <div class="row">
@@ -105,6 +99,7 @@ export default {
       await axios(config).then((res) => {
         this.msgNotification = true;
         this.msg = res.data.msg;
+        debugger;
         if (res.data.success) {
           this.msgSuccess = true;
           localStorage.setItem("user", JSON.stringify(res.data.user));
